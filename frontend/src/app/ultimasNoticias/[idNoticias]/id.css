@@ -1,0 +1,23 @@
+.container-pagina-noticia {
+    margin: 3rem auto;
+    max-width: 1500px;
+}
+
+.categoria-noticia {
+    color: var(--color-primary);
+    font-family: var(--font-body);
+    font-weight: bold;
+}
+
+.imagem-pagina-noticia {
+    text-align: center;
+    margin: 3rem;
+}
+
+.imagem-noticia {
+    width: 50vw;
+}
+
+.data-publicada {
+    color: rgba(65, 63, 63, 0.418);
+}

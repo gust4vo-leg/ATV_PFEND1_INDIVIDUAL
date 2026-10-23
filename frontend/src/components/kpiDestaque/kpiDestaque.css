@@ -1,0 +1,41 @@
+.kpi-cards {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;;
+}
+
+.kpi-cards a {
+    display: block;
+    text-decoration: none;
+    width: 100%;
+    height: 100%;
+}
+
+.kpi-cards img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.kpi-cards p {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    padding: 8px 0;
+    background: rgba(0, 0, 0, 0.85);
+    color: #ffffff !important;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+}
+
+.kpi-cards:hover img {
+    transform: scale(1.08);
+}

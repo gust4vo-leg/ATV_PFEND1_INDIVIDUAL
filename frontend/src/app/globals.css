@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;500;700&display=swap');
+
+:root {
+    --color-primary: #e91527;
+    --color-primary-hover: #C92D3A;
+    --color-primary-light: #FDE8EA;
+
+    --color-background: #F2F2F2;
+    --color-surface: #FFFFFF;
+    --color-sidebar: #111111;
+    --color-header: #151515;
+
+    --color-text: #151515;
+    --color-text-secondary: #737373;
+    --color-text-inverse: #FFFFFF;
+    --color-border: #ff00004f;
+
+    --color-sucesso: #16A34A;
+    --color-atencao: #F59E0B;
+    --color-perigo: #DC2626;
+    --color-info: #2563EB;
+
+    --border-divisoria: #44434381;
+
+    --font-heading: 'Bebas Neue', sans-serif;
+    --font-body: 'Roboto', sans-serif;
+    --font-txt: 'Inter', sans-serif;
+    --font-filter: "Ubuntu", sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+}
+
+body {
+    background: var(--color-background);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+}
+
+#noticias-destaques {
+    background: #f1eded4b;
+    padding: 40px 50px;
+}
+
+.container-hero {
+    padding: 40px;
+    background: var(--color-sidebar);
+}
+
+#kpis-esportes {
+    background: var(--color-sidebar);
+}
+
+.kpis-container {
+    padding: 60px 50px;
+}
+
+.top-kpis,
+.top-destaque {
+    border-left: 5px solid var(--color-primary);
+}
+
+.top-destaque h3 {
+    margin-left: 5px;
+    font-family: var(--font-body);
+    font-weight: bold;
+}
+
+.top-kpis h3 {
+    margin-left: 5px;
+    font-family: var(--font-body);
+    font-weight: bold;
+    color: var(--color-text-inverse);
+}
+
+.grid-kpi {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 20px;
+}
