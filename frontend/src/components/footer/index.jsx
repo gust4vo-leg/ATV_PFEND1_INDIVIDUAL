@@ -1,7 +1,29 @@
+"use client";
+
 import Link from "next/link";
-import './footer.css';
+import "./footer.css";
+import { useEffect, useState } from "react";
 
 export default function Footer() {
+  const [cardFooter, setCardFooter] = useState([]);
+  const [erro, setError] = useState("");
+
+  useEffect(() => {
+    fetch("http://localhost:3005/api/noticias")
+      .then((resposta) => {
+        if (!resposta.ok) {
+          throw new Error("Não foi possivél carregar as notícias");
+        }
+        return resposta.json();
+      })
+      .then((dados) => {
+        setCardFooter(dados);
+      })
+      .catch((erro) => {
+        setError(erro.message);
+      });
+  }, []);
+
   return (
     <footer>
       <div className="footer-left">
@@ -26,10 +48,10 @@ export default function Footer() {
           <nav>
             <ul>
               <li>
-                <Link href="#">Início</Link>
+                <Link href="/">Início</Link>
               </li>
               <li>
-                <Link href="#">Últimas Notícias</Link>
+                <Link href="/ultimasNoticias"> Notícias</Link>
               </li>
               <li className="dorpdown">
                 <Link
@@ -81,33 +103,17 @@ export default function Footer() {
           <h4>ESPORTE EM DESTAQUE</h4>
 
           <div className="grid-destaque-footer">
-            <div className="card-ul-noticia-footer">
-              <img src="/imagens/ney.jpg" />
-              <div className="card-info-Ul-noticias-footer">
-                <p className="categoria-footer">FUTEBOL</p>
-                <div className="txt-noticia-footer">
-                  Neymar Jr volta a ser convocado para a Seleção Brasileira
+            {cardFooter.slice(0, 3).map((noticia) => (
+              <div className="card-ul-noticia-footer" key={noticia.idNoticia}>
+                <img src={noticia.imagem} />
+                <div className="card-info-Ul-noticias-footer">
+                  <p className="categoria-footer">{noticia.categoria}</p>
+                  <div className="txt-noticia-footer">
+                    {noticia.titulo}
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="card-ul-noticia-footer">
-              <img src="/imagens/ney.jpg" />
-              <div className="card-info-Ul-noticias-footer">
-                <p className="categoria-footer">FUTEBOL</p>
-                <div className="txt-noticia-footer">
-                  Neymar Jr volta a ser convocado para a Seleção Brasileira
-                </div>
-              </div>
-            </div>
-            <div className="card-ul-noticia-footer">
-              <img src="/imagens/ney.jpg" />
-              <div className="card-info-Ul-noticias-footer">
-                <p className="categoria-footer">FUTEBOL</p>
-                <div className="txt-noticia-footer">
-                  Neymar Jr volta a ser convocado para a Seleção Brasileira
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
@@ -121,17 +127,23 @@ export default function Footer() {
         </span>
         <div className="inscrever">
           <form>
-            <input type="email" placeholder="Digite seu e-mail" name="novidades"/>
+            <input
+              type="email"
+              placeholder="Digite seu e-mail"
+              name="novidades"
+            />
             <button type="submit">
-                <i className="bi bi-send-fill"></i>
-                <p>Inscrever</p>
+              <i className="bi bi-send-fill"></i>
+              <p>Inscrever</p>
             </button>
           </form>
         </div>
       </div>
 
       <div className="footer-bottom">
-        <span>© 2026 <strong>CronoSport</strong>. Todos os direitos reservados</span>
+        <span>
+          © 2026 <strong>CronoSport</strong>. Todos os direitos reservados
+        </span>
       </div>
     </footer>
   );

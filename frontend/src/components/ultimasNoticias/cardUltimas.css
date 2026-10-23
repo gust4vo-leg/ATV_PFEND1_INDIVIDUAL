@@ -141,11 +141,7 @@
     color: var(--color-text-secondary);
     font-family: var(--font-txt);
     font-size: 12px;
-}
-
-.ultimas-data i {
-    color: var(--color-primary);
-    font-size: 14px;
+    margin-top: 10px;
 }
 
 .ultimas-data p {

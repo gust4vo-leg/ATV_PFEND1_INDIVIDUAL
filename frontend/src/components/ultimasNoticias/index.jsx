@@ -27,8 +27,7 @@ export default function CardUltimasNoticias({ UltimasNoticias = [] }) {
 
                   <div className="ultimas-card-rodape">
                     <span className="ultimas-data">
-                      <i className="bi bi-clock"></i>
-                      <p>{noticia.data}</p>
+                      <p>{new Date(noticia.data_publicacao).toLocaleDateString("pt-BR")}</p>
                     </span>
 
                     <Link href={`/ultimasNoticias/${noticia.idNoticias}`} className="ultimas-ler">
