@@ -1,0 +1,238 @@
+.gerenciar-tabela-container {
+    overflow: hidden;
+    background: var(--color-surface);
+    border-radius: 9px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.04);
+    margin-right: 2rem;
+    max-width: 1200px;
+    border: 1px solid var(--color-sidebar);
+}
+
+.gerenciar-tabela-container .table-responsive {
+    margin: 0;
+}
+
+.gerenciar-tabela {
+    width: 100%;
+    min-width: 850px;
+    margin: 0;
+    border-collapse: collapse;
+    vertical-align: middle;
+}
+
+.gerenciar-tabela thead th {
+    padding: 17px 16px;
+    background: var(--color-sidebar);
+    color: var(--color-text-inverse);
+    border-bottom: 1px solid var(--border-divisoria);
+    font-family: var(--font-txt);
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.gerenciar-tabela tbody td {
+    padding: 17px 16px;
+    background: var(--color-header);
+    color: var(--color-text-inverse);
+    border-bottom: 1px solid var(--border-divisoria);
+    font-family: var(--font-txt);
+    font-size: 13px;
+}
+
+.gerenciar-tabela tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.gerenciar-tabela tbody tr:hover td {
+    background: #0f0f0ff5;
+    color: var(--color-primary);
+    transition: .3s ease;
+}
+
+.gerenciar-imagem {
+    display: block;
+    width: 90px;
+    height: 62px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.titulo-admin {
+    color: var(--color-text);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.6;
+}
+
+.gerenciar-categoria {
+    display: inline-block;
+    padding: 6px 10px;
+    background: var(--color-primary-light);
+    color: var(--color-primary-hover);
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.gerenciar-data {
+    color: var(--color-text-secondary) !important;
+    white-space: nowrap;
+    font-size: 12px !important;
+}
+
+.gerenciar-acoes {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.gerenciar-acoes .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 34px;
+    padding: 0;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.gerenciar-acoes .btn-outline-primary {
+    color: var(--color-info);
+    border-color: var(--color-info);
+}
+
+.gerenciar-acoes .btn-outline-primary:hover {
+    background: var(--color-info);
+    color: #ffffff;
+}
+
+.gerenciar-acoes .btn-outline-danger {
+    color: var(--color-perigo);
+    border-color: var(--color-perigo);
+}
+
+.gerenciar-acoes .btn-outline-danger:hover {
+    background: var(--color-perigo);
+    color: #ffffff;
+}
+
+.gerenciar-vazio {
+    padding: 45px 20px !important;
+    color: var(--color-text-secondary) !important;
+    text-align: center;
+}
+
+.imagem-admin {
+    width: 75px;
+    height: 55px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.titulo-admin {
+    min-width: 220px;
+    max-width: 350px;
+    font-weight: 500;
+}
+
+.acoes-admin {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-editar-admin,
+.btn-excluir-admin {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 6px;
+    transition: transform 0.2s ease;
+}
+
+.btn-editar-admin {
+    color: #2878d0;
+}
+
+.btn-excluir-admin {
+    color: #a51c24;
+}
+
+.btn-editar-admin:hover,
+.btn-excluir-admin:hover {
+    transform: scale(1.12);
+}
+
+.gerenciar-vazio {
+    text-align: center;
+    padding: 25px;
+}
+
+.gerenciar-tabela-rodape {
+    flex-wrap: wrap;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    justify-content: space-between;
+    padding: 17px 20px;
+    background: var(--color-sidebar);
+    border-top: 1px solid var(--border-divisoria);
+    color: var(--color-text-secondary);
+    font-family: var(--font-txt);
+    font-size: 12px;
+}
+
+
+.paginacao-admin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.pagina-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    height: 34px;
+    padding: 0 9px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-family: var(--font-txt);
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease,
+                color 0.2s ease;
+}
+
+.pagina-btn:hover:not(:disabled):not(.pagina-ativa) {
+    border-color: #a51c24;
+    color: #c52b35;
+}
+
+.pagina-btn.pagina-ativa {
+    border-color: #a51c24;
+    background: #a51c24;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.pagina-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.pagina-btn:focus-visible {
+    outline: 2px solid #c52b35;
+    outline-offset: 3px;
+}

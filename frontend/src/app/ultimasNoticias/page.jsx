@@ -27,9 +27,7 @@ export default function UltimasNoticias() {
     const url =
       categoriaSelecionada === "Todas"
         ? "http://localhost:3005/api/noticias"
-        : `http://localhost:3005/api/noticias?categoria=${encodeURIComponent(
-            categoriaSelecionada,
-          )}`;
+        : `http://localhost:3005/api/noticias?categoria=${encodeURIComponent(categoriaSelecionada)}`;
 
     fetch(url)
       .then((resposta) => {

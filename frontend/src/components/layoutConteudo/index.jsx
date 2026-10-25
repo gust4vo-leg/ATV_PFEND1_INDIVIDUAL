@@ -1,3 +1,4 @@
+
 "use client";
 
 import { usePathname } from "next/navigation";
@@ -8,7 +9,7 @@ export default function LayoutConteudo({ children }) {
     const pathname = usePathname();
 
     const esconderHeaderFooter =
-        pathname === "/adminNoticias/login" ||
+        pathname === "/adminNoticias" ||
         pathname.startsWith("/adminNoticias/");
 
     return (
