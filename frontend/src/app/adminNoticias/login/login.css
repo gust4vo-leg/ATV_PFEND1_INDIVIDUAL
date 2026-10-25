@@ -1,0 +1,131 @@
+#login {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+
+    background-image:
+        linear-gradient(
+            rgba(0, 0, 0, 0.35),
+            rgba(0, 0, 0, 0.45)
+        ),
+        url("/imagens/fundo.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    color: #ffffff;
+    font-family: var(--font-body);
+    box-sizing: border-box;
+}
+
+#login * {
+    box-sizing: border-box;
+}
+
+/* FORMULÁRIO */
+
+.login-container {
+    width: 100%;
+    max-width: 550px;
+    padding: 40px;
+    background: rgba(5, 8, 11, 0.88);
+    border: 1px solid var(--color-primary);
+    border-radius: 12px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(8px);
+}
+
+.login-container h1 {
+    margin: 0 0 12px;
+    padding-left: 15px;
+    border-left: 5px solid var(--color-primary);
+    color: #ffffff;
+    font-family: var(--font-heading);
+    font-size: 36px;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.login-descricao {
+    margin: 0 0 30px;
+    color: #b8bec5;
+    font-family: var(--font-txt);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+/* CAMPOS */
+
+#login .form-label {
+    display: block;
+    margin-bottom: 9px;
+    color: #ffffff;
+    font-family: var(--font-txt);
+    font-size: 14px;
+}
+
+#login .form-control {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 14px;
+    background: rgba(10, 15, 20, 0.85);
+    border: 1px solid #39434d;
+    border-radius: 6px;
+    color: #ffffff;
+    font-family: var(--font-txt);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#login .form-control::placeholder {
+    color: #818b96;
+}
+
+#login .form-control:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.18);
+}
+
+/* BOTÃO */
+
+.login-botao {
+    width: 100%;
+    min-height: 50px;
+    margin-top: 12px;
+    padding: 13px 20px;
+    background: var(--color-primary);
+    border: none;
+    border-radius: 6px;
+    color: #ffffff;
+    font-family: var(--font-txt);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+}
+
+.login-botao:hover {
+    background: var(--color-primary-hover);
+    transform: translateY(-2px);
+}
+
+
+.login-voltar {
+    display: inline-block;
+    margin-top: 25px;
+    color: #c1c7ce;
+    font-family: var(--font-txt);
+    font-size: 13px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.login-voltar:hover {
+    color: var(--color-primary);
+}
+
