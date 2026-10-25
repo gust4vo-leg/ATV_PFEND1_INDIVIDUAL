@@ -8,13 +8,35 @@ export default function UltimasNoticias() {
   const [noticias, setNoticias] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
+  const [categoriaSelecionada, setCategoriaSelecionada] = useState("Todas");
+
+  const categorias = [
+    "Todas",
+    "Futebol",
+    "Basquete",
+    "Vôlei",
+    "Fórmula 1",
+    "Futebol Americano",
+    "Outros",
+  ];
 
   useEffect(() => {
-    fetch("http://localhost:3005/api/noticias")
+    setCarregando(true);
+    setErro("");
+
+    const url =
+      categoriaSelecionada === "Todas"
+        ? "http://localhost:3005/api/noticias"
+        : `http://localhost:3005/api/noticias?categoria=${encodeURIComponent(
+            categoriaSelecionada,
+          )}`;
+
+    fetch(url)
       .then((resposta) => {
         if (!resposta.ok) {
           throw new Error("Não foi possível carregar as notícias.");
         }
+
         return resposta.json();
       })
       .then((dados) => {
@@ -26,7 +48,7 @@ export default function UltimasNoticias() {
       .finally(() => {
         setCarregando(false);
       });
-  }, []);
+  }, [categoriaSelecionada]);
 
   return (
     <main id="ultimasNoticias">
@@ -44,13 +66,15 @@ export default function UltimasNoticias() {
       <div className="filtro">
         <nav className="filtro-ultimas">
           <ul>
-            <li className="active">Todas</li>
-            <li>Futebol</li>
-            <li>Basquete</li>
-            <li>Vôlei</li>
-            <li>Fórmula 1</li>
-            <li>Futebol Americano</li>
-            <li>Outros</li>
+            {categorias.map((categoria) => (
+              <li
+                key={categoria}
+                className={categoriaSelecionada === categoria ? "active" : ""}
+                onClick={() => setCategoriaSelecionada(categoria)}
+              >
+                {categoria}
+              </li>
+            ))}
           </ul>
         </nav>
 
@@ -67,7 +91,7 @@ export default function UltimasNoticias() {
         ) : erro ? (
           <p>{erro}</p>
         ) : noticias.length === 0 ? (
-          <p>Nenhuma notícia cadastrada.</p>
+          <p style={{color: "#fff", margin: "10px"}}>Nenhuma notícia cadastrada.</p>
         ) : (
           <CardUltimasNoticias UltimasNoticias={noticias} />
         )}

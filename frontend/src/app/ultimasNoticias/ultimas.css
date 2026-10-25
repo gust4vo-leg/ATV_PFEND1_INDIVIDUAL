@@ -47,6 +47,11 @@
     background: #3535355b;
     padding: 10px 20px;
     border-radius: 6px;
+    cursor: pointer;
+}
+
+.filtro-ultimas ul li.active {
+    background: var(--color-primary);
 }
 
 .btn-filtro-data {
