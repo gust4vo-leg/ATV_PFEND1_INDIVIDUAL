@@ -35,6 +35,11 @@ export default function Header() {
                   Notícias
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link className="nav-link active" href="/adminNoticias">
+                 Dashboard
+                </Link>
+              </li>
               <li className="nav-item dropdown">
                 <Link
                   className="nav-link active dropdown-toggle"

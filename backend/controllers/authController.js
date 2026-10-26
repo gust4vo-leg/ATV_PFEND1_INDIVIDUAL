@@ -82,15 +82,4 @@ export function logout(req, res) {
   });
 }
 
-export function logout(req, res) {
-  res.clearCookie("token_admin", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/",
-  });
 
-  return res.status(200).json({
-    mensagem: "Logout realizado com sucesso.",
-  });
-}

@@ -44,11 +44,21 @@ export default function Sidebar() {
       <nav className="sidebar">
         <ul>
           <li>
-            <Link href="/adminNoticias" style={{color: "var(--color-text-inverse)"}}>Todas as notícias</Link>
+            <Link
+              href="/adminNoticias"
+              style={{ color: "var(--color-text-inverse)" }}
+            >
+              Todas as notícias
+            </Link>
           </li>
 
           <li>
-            <Link href="/adminNoticias/adicionar" style={{color: "var(--color-text-inverse)"}}>Adicionar notícias</Link>
+            <Link
+              href="/adminNoticias/adicionar"
+              style={{ color: "var(--color-text-inverse)" }}
+            >
+              Adicionar notícias
+            </Link>
           </li>
 
           <li>
@@ -63,28 +73,6 @@ export default function Sidebar() {
         <div className="usuario">
           <span>Administrador</span>
         </div>
-
-        <button
-          type="button"
-          className="logout"
-          onClick={fazerLogout}
-          disabled={saindo}
-          style={{border: "none"}}
-        >
-          <i
-            className={
-              saindo ? "bi bi-hourglass-split" : "bi bi-box-arrow-left"
-            }
-          ></i>
-
-          <span>{saindo ? "Saindo..." : "Sair"}</span>
-        </button>
-
-        {erroLogout && (
-          <p className="erro-logout" role="alert">
-            {erroLogout}
-          </p>
-        )}
       </div>
     </section>
   );
