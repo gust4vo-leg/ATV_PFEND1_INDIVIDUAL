@@ -1,9 +1,7 @@
 import express from "express";
 import cors from "cors";
-import cookieParser from "cookie-parser";
-
+import path from "node:path";
 import noticiasRoutes from "./routes/noticiasRoutes.js";
-import authRoutes from "./routes/authRoutes.js";
 
 const app = express();
 
@@ -15,10 +13,13 @@ app.use(
 );
 
 app.use(express.json());
-app.use(cookieParser());
+
+app.use(
+  "/uploads",
+  express.static(path.resolve("uploads")),
+);
 
 app.use("/api/noticias", noticiasRoutes);
-app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
   res.send("API do site de notícias rodando com sucesso com ES Modules!");

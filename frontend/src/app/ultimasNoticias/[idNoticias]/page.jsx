@@ -22,7 +22,7 @@ export default function Noticia() {
     async function buscarNoticia() {
       try {
         const res = await fetch(
-          `http://localhost:3005/api/noticias/${idNoticias}`
+          `http://localhost:3005/api/noticias/${idNoticias}`,
         );
 
         if (!res.ok) {
@@ -70,9 +70,25 @@ export default function Noticia() {
         <div className="imagem-pagina-noticia">
           {noticia.imagem && (
             <img
-              src={noticia.imagem}
+              src={
+                noticia.imagem
+                  ? noticia.imagem.startsWith("http")
+                    ? noticia.imagem
+                    : `http://localhost:3005${
+                        noticia.imagem.startsWith("/")
+                          ? noticia.imagem
+                          : `/${noticia.imagem}`
+                      }`
+                  : "/imagem-indisponivel.png"
+              }
               alt={noticia.titulo}
               className="imagem-noticia"
+              onError={(event) => {
+                console.error(
+                  "Não foi possível carregar a imagem:",
+                  event.currentTarget.src,
+                );
+              }}
             />
           )}
         </div>

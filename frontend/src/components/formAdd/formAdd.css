@@ -1,0 +1,175 @@
+.formulario-add {
+    width: 100%;
+    padding: 22px;
+    background: var(--color-header);
+    color: var(--color-text-inverse);
+    border: 1px solid var(--border-divisoria);
+    border-radius: 5px;
+    font-family: var(--font-body);
+    box-sizing: border-box;
+}
+
+.formulario-add * {
+    box-sizing: border-box;
+}
+
+.top-from {
+    margin-bottom: 22px;
+    color: var(--color-text-inverse);
+    font-family: var(--font-txt);
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.formulario-add .mb-3 {
+    margin-bottom: 18px !important;
+}
+
+.formulario-add .form-label,
+.formulario-add .campo-modal label {
+    display: block;
+    margin-bottom: 7px;
+    color: var(--color-text-inverse);
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.formulario-add .form-label::after {
+    content: "";
+}
+
+.formulario-add .form-control,
+.formulario-add .form-select,
+.formulario-add input[type="date"] {
+    width: 100%;
+    min-height: 42px;
+    padding: 10px 12px;
+    background-color: var(--color-sidebar);
+    color: var(--color-text-inverse);
+    border: 1px solid var(--border-divisoria);
+    border-radius: 5px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    box-shadow: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.formulario-add .form-control::placeholder {
+    color: var(--color-text-secondary);
+    opacity: 1;
+}
+
+.formulario-add .form-control:focus,
+.formulario-add .form-select:focus {
+    border: 1px solid var(--color-primary);
+    background-color: var(--color-sidebar);
+    color: var(--color-text-inverse);
+}
+
+.formulario-add .form-select option {
+    background-color: var(--color-sidebar);
+    color: var(--color-text-inverse);
+}
+
+.formulario-add textarea.form-control {
+    min-height: 150px;
+    resize: none;
+    line-height: 1.6;
+}
+
+.formulario-add .campo-modal {
+    margin-bottom: 22px;
+}
+
+.formulario-add .campo-modal label {
+    margin-bottom: 8px;
+}
+
+.formulario-add .upload-imagem {
+    position: relative;
+    display: flex;
+    min-height: 115px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 18px;
+    overflow: hidden;
+    background-color: var(--color-sidebar);
+    color: var(--color-text-inverse);
+    border: 1px dashed var(--color-border);
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+.formulario-add .upload-imagem:hover {
+    border-color: var(--color-primary);
+    background-color: var(--color-header);
+}
+
+.formulario-add .upload-imagem i {
+    color: var(--color-text-inverse);
+    font-size: 28px;
+}
+
+.formulario-add .upload-imagem span {
+    color: var(--color-text-inverse);
+    font-size: 13px;
+}
+
+.formulario-add .upload-imagem input[type="file"] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.formulario-add .acoes-modal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.formulario-add .btn-cancelar,
+.formulario-add .btn-salvar {
+    display: inline-flex;
+    min-height: 42px;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.formulario-add .btn-cancelar {
+    background-color: var(--color-header);
+    color: var(--color-text-inverse);
+    border-color: var(--border-divisoria);
+}
+
+.formulario-add .btn-cancelar:hover {
+    background-color: var(--color-sidebar);
+    border-color: var(--color-text-secondary);
+}
+
+.formulario-add .btn-salvar {
+    background-color: var(--color-primary);
+    color: var(--color-text-inverse);
+    border-color: var(--color-primary);
+}
+
+.formulario-add .btn-salvar:hover {
+    background-color: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
+}

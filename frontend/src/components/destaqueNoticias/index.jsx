@@ -41,9 +41,25 @@ export default function Destaque() {
           <div className="col" key={noticia.idNoticias}>
             <div className="card h-100">
               <img
-                src={noticia.imagem}
-                className="card-img-top"
+                src={
+                  noticia.imagem
+                    ? noticia.imagem.startsWith("http")
+                      ? noticia.imagem
+                      : `http://localhost:3005${
+                          noticia.imagem.startsWith("/")
+                            ? noticia.imagem
+                            : `/${noticia.imagem}`
+                        }`
+                    : "/imagem-indisponivel.png"
+                }
                 alt={noticia.titulo}
+                className="card-img-top"
+                onError={(event) => {
+                  console.error(
+                    "Não foi possível carregar a imagem:",
+                    event.currentTarget.src,
+                  );
+                }}
               />
 
               <div className="card-body">

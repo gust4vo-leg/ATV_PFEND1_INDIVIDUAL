@@ -56,34 +56,115 @@ export const listarDestaques = async (req, res) => {
   }
 };
 
-export const criarNoticia = async (req, res) => {
-  const { titulo, categoria, descricao, conteudo, imagem } = req.body;
-
-  if (!titulo || !categoria || !descricao || !conteudo) {
-    return res.status(400).json({ error: "Todos os campos são obrigatórios" });
-  }
-
+export async function criarNoticia(req, res) {
   try {
-    const query =
-      "INSERT INTO noticias (titulo, categoria, descricao, conteudo, imagem) VALUES (?, ?, ?, ?, ?)";
+    const { titulo, categoria, descricao, conteudo, data_publicacao } =
+      req.body;
 
-    const [result] = await pool.query(query, [
-      titulo,
-      categoria,
-      descricao,
-      conteudo,
+    if (
+      typeof titulo !== "string" ||
+      !titulo.trim() ||
+      typeof categoria !== "string" ||
+      !categoria.trim() ||
+      typeof descricao !== "string" ||
+      !descricao.trim() ||
+      typeof conteudo !== "string" ||
+      !conteudo.trim()
+    ) {
+      return res.status(400).json({
+        mensagem: "Preencha todos os campos obrigatórios.",
+      });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({
+        mensagem: "Selecione uma imagem para a notícia.",
+      });
+    }
+
+    if (titulo.trim().length > 500) {
+      return res.status(400).json({
+        mensagem: "O título deve ter no máximo 500 caracteres.",
+      });
+    }
+
+    if (categoria.trim().length > 255) {
+      return res.status(400).json({
+        mensagem: "A categoria deve ter no máximo 255 caracteres.",
+      });
+    }
+
+    if (descricao.trim().length > 500) {
+      return res.status(400).json({
+        mensagem: "A descrição deve ter no máximo 500 caracteres.",
+      });
+    }
+
+    let data = null;
+
+    if (data_publicacao) {
+      if (
+        typeof data_publicacao !== "string" ||
+        !/^\d{4}-\d{2}-\d{2}$/.test(data_publicacao)
+      ) {
+        return res.status(400).json({
+          mensagem: "Informe uma data de publicação válida.",
+        });
+      }
+
+      const [ano, mes, dia] = data_publicacao.split("-").map(Number);
+      const dataVerificada = new Date(Date.UTC(ano, mes - 1, dia));
+
+      if (
+        dataVerificada.getUTCFullYear() !== ano ||
+        dataVerificada.getUTCMonth() !== mes - 1 ||
+        dataVerificada.getUTCDate() !== dia
+      ) {
+        return res.status(400).json({
+          mensagem: "A data de publicação informada não existe.",
+        });
+      }
+
+      data = `${data_publicacao} 12:00:00`;
+    }
+
+    const imagem = `/uploads/${req.file.filename}`;
+
+    const sql = `
+      INSERT INTO noticias
+        (titulo, categoria, descricao, conteudo, imagem, data_publicacao)
+      VALUES (?, ?, ?, ?, ?, COALESCE(?, CURRENT_TIMESTAMP))
+    `;
+
+    const [resultado] = await pool.execute(sql, [
+      titulo.trim(),
+      categoria.trim(),
+      descricao.trim(),
+      conteudo.trim(),
       imagem,
+      data,
     ]);
 
     return res.status(201).json({
-      message: "Notícia criada com sucesso!",
-      idNoticias: result.insertId,
+      mensagem: "Notícia cadastrada com sucesso!",
+      noticia: {
+        idNoticias: resultado.insertId,
+        titulo: titulo.trim(),
+        categoria: categoria.trim(),
+        descricao: descricao.trim(),
+        conteudo: conteudo.trim(),
+        imagem,
+        data_publicacao: data,
+      },
     });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: "Erro ao salvar a notícia." });
+  } catch (erro) {
+    console.error("Erro ao cadastrar notícia:", erro);
+
+    return res.status(500).json({
+      mensagem: "Erro interno ao cadastrar a notícia.",
+    });
   }
-};
+}
 
 export const buscarNoticiaPorId = async (req, res) => {
   try {

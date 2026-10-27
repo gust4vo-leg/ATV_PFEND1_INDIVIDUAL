@@ -1,11 +1,11 @@
 .gerenciar-tabela-container {
     overflow: hidden;
+    border: 1px solid #3b3b3b;
     background: var(--color-surface);
     border-radius: 9px;
     box-shadow: 0 5px 18px rgba(0, 0, 0, 0.04);
     margin-right: 2rem;
     max-width: 1200px;
-    border: 1px solid var(--color-sidebar);
 }
 
 .gerenciar-tabela-container .table-responsive {

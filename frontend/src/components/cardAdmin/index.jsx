@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -9,19 +8,16 @@ const NOTICIAS_POR_PAGINA = 7;
 export default function CardAdmin({ noticiasAdmin = [] }) {
   const [paginaAtual, setPaginaAtual] = useState(1);
 
-  const totalPaginas = Math.ceil(
-    noticiasAdmin.length / NOTICIAS_POR_PAGINA
-  );
+  const totalPaginas = Math.ceil(noticiasAdmin.length / NOTICIAS_POR_PAGINA);
 
   const indiceInicial = (paginaAtual - 1) * NOTICIAS_POR_PAGINA;
 
   const noticiasPaginadas = noticiasAdmin.slice(
     indiceInicial,
-    indiceInicial + NOTICIAS_POR_PAGINA
+    indiceInicial + NOTICIAS_POR_PAGINA,
   );
 
   useEffect(() => {
-    // Volta para uma página válida se a lista diminuir, por exemplo, após um filtro.
     setPaginaAtual((pagina) => Math.min(pagina, Math.max(1, totalPaginas)));
   }, [totalPaginas]);
 
@@ -57,9 +53,25 @@ export default function CardAdmin({ noticiasAdmin = [] }) {
                 <tr key={noticia.idNoticias}>
                   <td>
                     <img
-                      src={noticia.imagem}
+                      src={
+                        noticia.imagem
+                          ? noticia.imagem.startsWith("http")
+                            ? noticia.imagem
+                            : `http://localhost:3005${
+                                noticia.imagem.startsWith("/")
+                                  ? noticia.imagem
+                                  : `/${noticia.imagem}`
+                              }`
+                          : "/imagem-indisponivel.png"
+                      }
                       alt={noticia.titulo}
                       className="imagem-admin"
+                      onError={(event) => {
+                        console.error(
+                          "Não foi possível carregar a imagem:",
+                          event.currentTarget.src,
+                        );
+                      }}
                     />
                   </td>
 
@@ -69,9 +81,9 @@ export default function CardAdmin({ noticiasAdmin = [] }) {
 
                   <td>
                     {noticia.data_publicacao
-                      ? new Date(
-                          noticia.data_publicacao
-                        ).toLocaleDateString("pt-BR")
+                      ? new Date(noticia.data_publicacao).toLocaleDateString(
+                          "pt-BR",
+                        )
                       : "Sem data"}
                   </td>
 
@@ -113,7 +125,7 @@ export default function CardAdmin({ noticiasAdmin = [] }) {
             ? "Nenhuma notícia"
             : `Mostrando ${indiceInicial + 1}–${Math.min(
                 indiceInicial + NOTICIAS_POR_PAGINA,
-                noticiasAdmin.length
+                noticiasAdmin.length,
               )} de ${noticiasAdmin.length} notícias`}
         </span>
 
@@ -142,7 +154,7 @@ export default function CardAdmin({ noticiasAdmin = [] }) {
                 >
                   {pagina}
                 </button>
-              )
+              ),
             )}
 
             <button

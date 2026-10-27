@@ -60,8 +60,10 @@ export default function Admin() {
         </div>
 
         <div className="btn-adicionar">
-          <i className="bi bi-plus-lg"></i>
-          <span>Adicionar Notícia</span>
+          <Link href="/adminNoticias/adicionar">
+            <i className="bi bi-plus-lg"></i>
+            <span>Adicionar Notícia</span>
+          </Link>
         </div>
       </div>
 
@@ -122,7 +124,27 @@ export default function Admin() {
 
             {noticiaAdmin.slice(0, 3).map((noticia) => (
               <div className="conteudo-ul-noticia" key={noticia.idNoticia}>
-                <img src={noticia.imagem} />
+                <img
+                  src={
+                    noticia.imagem
+                      ? noticia.imagem.startsWith("http")
+                        ? noticia.imagem
+                        : `http://localhost:3005${
+                            noticia.imagem.startsWith("/")
+                              ? noticia.imagem
+                              : `/${noticia.imagem}`
+                          }`
+                      : "/imagem-indisponivel.png"
+                  }
+                  alt={noticia.titulo}
+                  className="imagem-admin"
+                  onError={(event) => {
+                    console.error(
+                      "Não foi possível carregar a imagem:",
+                      event.currentTarget.src,
+                    );
+                  }}
+                />
 
                 <div className="txt">
                   <div className="titulo">{noticia.titulo}</div>

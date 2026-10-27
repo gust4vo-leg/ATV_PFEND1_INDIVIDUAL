@@ -75,13 +75,29 @@ export default function Hero() {
                 key={noticia.idNoticias}
               >
                 <img
-                  src={noticia.imagem}
-                  className="d-block w-100"
+                  src={
+                    noticia.imagem
+                      ? noticia.imagem.startsWith("http")
+                        ? noticia.imagem
+                        : `http://localhost:3005${
+                            noticia.imagem.startsWith("/")
+                              ? noticia.imagem
+                              : `/${noticia.imagem}`
+                          }`
+                      : "/imagem-indisponivel.png"
+                  }
                   alt={noticia.titulo}
+                  className="imagem-admin"
+                  onError={(event) => {
+                    console.error(
+                      "Não foi possível carregar a imagem:",
+                      event.currentTarget.src,
+                    );
+                  }}
                 />
 
                 <div className="carousel-caption d-none d-md-block">
-                  <div className="categoria">{noticia.categoria}</div>
+                  <div className="categoria" style={{textAlign: "center"}}>{noticia.categoria}</div>
                   <h5>{noticia.titulo}</h5>
                   <p>{noticia.descricao}</p>
                 </div>
@@ -129,10 +145,29 @@ export default function Hero() {
 
         {(noticias || []).slice(0, 4).map((noticia) => (
           <div className="card-ul-noticia" key={noticia.idNoticias}>
-            <img src={noticia.imagem} alt={noticia.titulo} />
+            <img
+              src={
+                noticia.imagem
+                  ? noticia.imagem.startsWith("http")
+                    ? noticia.imagem
+                    : `http://localhost:3005${
+                        noticia.imagem.startsWith("/")
+                          ? noticia.imagem
+                          : `/${noticia.imagem}`
+                      }`
+                  : "/imagem-indisponivel.png"
+              }
+              alt={noticia.titulo}
+              onError={(event) => {
+                console.error(
+                  "Não foi possível carregar a imagem:",
+                  event.currentTarget.src,
+                );
+              }}
+            />
 
             <div className="card-info-Ul-noticias">
-              <p className="categoria">{noticia.categoria}</p>
+              <p className="categoria" style={{textAlign: "center"}}>{noticia.categoria}</p>
 
               <div className="txt-noticia">{noticia.titulo}</div>
             </div>

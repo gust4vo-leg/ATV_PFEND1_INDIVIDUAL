@@ -14,9 +14,25 @@ export default function CardUltimasNoticias({ UltimasNoticias = [] }) {
               >
                 <div className="ultimas-imagem-container">
                   <img
-                    src={noticia.imagem}
+                    src={
+                      noticia.imagem
+                        ? noticia.imagem.startsWith("http")
+                          ? noticia.imagem
+                          : `http://localhost:3005${
+                              noticia.imagem.startsWith("/")
+                                ? noticia.imagem
+                                : `/${noticia.imagem}`
+                            }`
+                        : "/imagem-indisponivel.png"
+                    }
                     alt={noticia.titulo}
                     className="ultimas-imagem"
+                    onError={(event) => {
+                      console.error(
+                        "Não foi possível carregar a imagem:",
+                        event.currentTarget.src,
+                      );
+                    }}
                   />
                   <span className="ultimas-categoria">{noticia.categoria}</span>
                 </div>
@@ -27,10 +43,17 @@ export default function CardUltimasNoticias({ UltimasNoticias = [] }) {
 
                   <div className="ultimas-card-rodape">
                     <span className="ultimas-data">
-                      <p>{new Date(noticia.data_publicacao).toLocaleDateString("pt-BR")}</p>
+                      <p>
+                        {new Date(noticia.data_publicacao).toLocaleDateString(
+                          "pt-BR",
+                        )}
+                      </p>
                     </span>
 
-                    <Link href={`/ultimasNoticias/${noticia.idNoticias}`} className="ultimas-ler">
+                    <Link
+                      href={`/ultimasNoticias/${noticia.idNoticias}`}
+                      className="ultimas-ler"
+                    >
                       Ler notícia <i className="bi bi-arrow-up-right"></i>
                     </Link>
                   </div>

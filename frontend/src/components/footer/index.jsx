@@ -105,12 +105,30 @@ export default function Footer() {
           <div className="grid-destaque-footer">
             {cardFooter.slice(0, 3).map((noticia) => (
               <div className="card-ul-noticia-footer" key={noticia.idNoticia}>
-                <img src={noticia.imagem} />
+                <img
+                  src={
+                    noticia.imagem
+                      ? noticia.imagem.startsWith("http")
+                        ? noticia.imagem
+                        : `http://localhost:3005${
+                            noticia.imagem.startsWith("/")
+                              ? noticia.imagem
+                              : `/${noticia.imagem}`
+                          }`
+                      : "/imagem-indisponivel.png"
+                  }
+                  alt={noticia.titulo}
+                  className="imagem-admin"
+                  onError={(event) => {
+                    console.error(
+                      "Não foi possível carregar a imagem:",
+                      event.currentTarget.src,
+                    );
+                  }}
+                />
                 <div className="card-info-Ul-noticias-footer">
                   <p className="categoria-footer">{noticia.categoria}</p>
-                  <div className="txt-noticia-footer">
-                    {noticia.titulo}
-                  </div>
+                  <div className="txt-noticia-footer">{noticia.titulo}</div>
                 </div>
               </div>
             ))}
