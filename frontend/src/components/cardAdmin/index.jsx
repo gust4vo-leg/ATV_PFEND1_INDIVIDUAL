@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import ModalEdit from "../modalEdit";
 import "./cardAdmin.css";
 
 const NOTICIAS_POR_PAGINA = 7;
@@ -13,6 +14,19 @@ export default function CardAdmin({ noticiasAdmin = [] }) {
     indiceInicial,
     indiceInicial + NOTICIAS_POR_PAGINA,
   );
+
+  const [modalAberto, setModalAberto] = useState(false);
+  const [noticiaSelecionada, setNoticiaSelecionada] = useState(null);
+
+  function abrirModalEditar(noticia) {
+    setNoticiaSelecionada(noticia);
+    setModalAberto(true);
+  }
+
+  function fecharModalEditar() {
+    setModalAberto(false);
+    setNoticiaSelecionada(null);
+  }
 
   useEffect(() => {
     setPaginaAtual((pagina) => Math.min(pagina, Math.max(1, totalPaginas)));
@@ -119,9 +133,7 @@ export default function CardAdmin({ noticiasAdmin = [] }) {
                         type="button"
                         className="btn-editar-admin"
                         title="Editar notícia"
-                        onClick={() =>
-                          (window.location.href = `/adminNoticias/editar/${noticia.idNoticias}`)
-                        }
+                        onClick={() => abrirModalEditar(noticia)}
                       >
                         <i className="bi bi-pencil-square"></i>
                       </button>
@@ -193,6 +205,13 @@ export default function CardAdmin({ noticiasAdmin = [] }) {
           </nav>
         )}
       </footer>
+      {modalAberto && noticiaSelecionada && (
+      <ModalEdit
+        noticia={noticiaSelecionada}
+        onFechar={fecharModalEditar}/>
+    )}
     </div>
+
+    
   );
 }
