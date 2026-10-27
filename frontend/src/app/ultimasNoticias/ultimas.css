@@ -53,23 +53,3 @@
 .filtro-ultimas ul li.active {
     background: var(--color-primary);
 }
-
-.btn-filtro-data {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    border: none;
-    padding: 10px 20px;
-    background-color: var(--color-primary);
-    border-radius: 8px;
-    color: var(--color-text-inverse);
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    margin-top: 1rem;
-    transition: background-color 0.2s;
-}
-
-.btn-filtro-data:hover {
-    background-color: var(--color-primary-hover);
-}

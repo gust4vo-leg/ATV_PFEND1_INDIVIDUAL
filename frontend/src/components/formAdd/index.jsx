@@ -257,7 +257,7 @@ export default function FormAdd() {
           </label>
 
           <div className="upload-imagem">
-            <i class="bi bi-image"></i>
+            <i className="bi bi-image"></i>
             <span>Selecionar imagem</span>
 
             <input

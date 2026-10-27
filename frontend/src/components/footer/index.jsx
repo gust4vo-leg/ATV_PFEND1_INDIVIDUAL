@@ -12,8 +12,9 @@ export default function Footer() {
     fetch("http://localhost:3005/api/noticias")
       .then((resposta) => {
         if (!resposta.ok) {
-          throw new Error("Não foi possivél carregar as notícias");
+          throw new Error("Não foi possível carregar as notícias.");
         }
+
         return resposta.json();
       })
       .then((dados) => {
@@ -27,12 +28,14 @@ export default function Footer() {
   return (
     <footer>
       <div className="footer-left">
-        <img src="/imagens/logo.png" />
+        <img src="/imagens/logo.png" alt="CronoSport" />
+
         <span>
           A CronoSport é o seu portal de notícias esportivas, trazendo as
           principais informações, análises e novidades do mundo do esporte, em
-          um só lugar
+          um só lugar.
         </span>
+
         <div className="app-grid">
           <i className="bi bi-instagram"></i>
           <i className="bi bi-twitter-x"></i>
@@ -41,6 +44,7 @@ export default function Footer() {
           <i className="bi bi-tiktok"></i>
         </div>
       </div>
+
       <div className="footer-main">
         <div className="top-footer-main-left">
           <h4>NAVEGAÇÃO</h4>
@@ -50,14 +54,16 @@ export default function Footer() {
               <li>
                 <Link href="/">Início</Link>
               </li>
+
               <li>
-                <Link href="/ultimasNoticias"> Notícias</Link>
+                <Link href="/ultimasNoticias">Notícias</Link>
               </li>
+
               <li className="dorpdown">
                 <Link
                   className="nav-link active dropdown-toggle"
-                  href="#"
-                  id="navbarDropdown"
+                  href="/ultimasNoticias"
+                  id="footerDropdown"
                   role="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
@@ -65,32 +71,61 @@ export default function Footer() {
                   Esportes
                 </Link>
 
-                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <ul className="dropdown-menu" aria-labelledby="footerDropdown">
                   <li>
-                    <Link className="dropdown-item" href="#">
+                    <Link
+                      className="dropdown-item"
+                      href="/ultimasNoticias?categoria=Futebol"
+                    >
                       Futebol
                     </Link>
                   </li>
+
                   <li>
-                    <Link className="dropdown-item" href="#">
+                    <Link
+                      className="dropdown-item"
+                      href="/ultimasNoticias?categoria=Basquete"
+                    >
                       Basquete
                     </Link>
                   </li>
+
                   <li>
-                    <Link className="dropdown-item" href="#">
+                    <Link
+                      className="dropdown-item"
+                      href="/ultimasNoticias?categoria=Fórmula%201"
+                    >
                       Fórmula 1
                     </Link>
                   </li>
+
                   <li>
-                    <Link className="dropdown-item" href="#">
+                    <Link
+                      className="dropdown-item"
+                      href="/ultimasNoticias?categoria=Futebol%20Americano"
+                    >
                       Futebol Americano
                     </Link>
                   </li>
+
+                  <li>
+                    <Link
+                      className="dropdown-item"
+                      href="/ultimasNoticias?categoria=Vôlei"
+                    >
+                      Vôlei
+                    </Link>
+                  </li>
+
                   <li>
                     <hr className="dropdown-divider" />
                   </li>
+
                   <li>
-                    <Link className="dropdown-item" href="#">
+                    <Link
+                      className="dropdown-item"
+                      href="/ultimasNoticias?categoria=Outros"
+                    >
                       Outros esportes
                     </Link>
                   </li>
@@ -99,50 +134,63 @@ export default function Footer() {
             </ul>
           </nav>
         </div>
+
         <div className="top-footer-main-right">
           <h4>ESPORTE EM DESTAQUE</h4>
 
           <div className="grid-destaque-footer">
-            {cardFooter.slice(0, 3).map((noticia) => (
-              <div className="card-ul-noticia-footer" key={noticia.idNoticia}>
-                <img
-                  src={
-                    noticia.imagem
-                      ? noticia.imagem.startsWith("http")
-                        ? noticia.imagem
-                        : `http://localhost:3005${
-                            noticia.imagem.startsWith("/")
-                              ? noticia.imagem
-                              : `/${noticia.imagem}`
-                          }`
-                      : "/imagem-indisponivel.png"
-                  }
-                  alt={noticia.titulo}
-                  className="imagem-admin"
-                  onError={(event) => {
-                    console.error(
-                      "Não foi possível carregar a imagem:",
-                      event.currentTarget.src,
-                    );
-                  }}
-                />
-                <div className="card-info-Ul-noticias-footer">
-                  <p className="categoria-footer">{noticia.categoria}</p>
-                  <div className="txt-noticia-footer">{noticia.titulo}</div>
+            {erro ? (
+              <p>{erro}</p>
+            ) : (
+              cardFooter.slice(0, 3).map((noticia) => (
+                <div
+                  className="card-ul-noticia-footer"
+                  key={noticia.idNoticias}
+                >
+                  <img
+                    src={
+                      noticia.imagem
+                        ? noticia.imagem.startsWith("http")
+                          ? noticia.imagem
+                          : `http://localhost:3005${
+                              noticia.imagem.startsWith("/")
+                                ? noticia.imagem
+                                : `/${noticia.imagem}`
+                            }`
+                        : "/imagem-indisponivel.png"
+                    }
+                    alt={noticia.titulo}
+                    className="imagem-admin"
+                    onError={(event) => {
+                      console.error(
+                        "Não foi possível carregar a imagem:",
+                        event.currentTarget.src,
+                      );
+                    }}
+                  />
+
+                  <div className="card-info-Ul-noticias-footer">
+                    <p className="categoria-footer">{noticia.categoria}</p>
+
+                    <div className="txt-noticia-footer">{noticia.titulo}</div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
       </div>
+
       <div className="footer-right">
         <div className="top-footer-right">
           <h4>RECEBA NOVIDADES</h4>
         </div>
+
         <span>
           Cadastre-se para receber as principais notícias esportivas no seu
           e-mail.
         </span>
+
         <div className="inscrever">
           <form>
             <input
@@ -150,6 +198,7 @@ export default function Footer() {
               placeholder="Digite seu e-mail"
               name="novidades"
             />
+
             <button type="submit">
               <i className="bi bi-send-fill"></i>
               <p>Inscrever</p>

@@ -2,6 +2,7 @@
 
 import "./hero.css";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function Hero() {
   const [noticias, setNoticias] = useState([]);
@@ -97,7 +98,9 @@ export default function Hero() {
                 />
 
                 <div className="carousel-caption d-none d-md-block">
-                  <div className="categoria" style={{textAlign: "center"}}>{noticia.categoria}</div>
+                  <div className="categoria" style={{ textAlign: "center" }}>
+                    {noticia.categoria}
+                  </div>
                   <h5>{noticia.titulo}</h5>
                   <p>{noticia.descricao}</p>
                 </div>
@@ -144,34 +147,38 @@ export default function Hero() {
         )}
 
         {(noticias || []).slice(0, 4).map((noticia) => (
-          <div className="card-ul-noticia" key={noticia.idNoticias}>
-            <img
-              src={
-                noticia.imagem
-                  ? noticia.imagem.startsWith("http")
-                    ? noticia.imagem
-                    : `http://localhost:3005${
-                        noticia.imagem.startsWith("/")
-                          ? noticia.imagem
-                          : `/${noticia.imagem}`
-                      }`
-                  : "/imagem-indisponivel.png"
-              }
-              alt={noticia.titulo}
-              onError={(event) => {
-                console.error(
-                  "Não foi possível carregar a imagem:",
-                  event.currentTarget.src,
-                );
-              }}
-            />
+          <Link  href={`/ultimasNoticias/${noticia.idNoticias}`}>
+            <div className="card-ul-noticia" key={noticia.idNoticias}>
+              <img
+                src={
+                  noticia.imagem
+                    ? noticia.imagem.startsWith("http")
+                      ? noticia.imagem
+                      : `http://localhost:3005${
+                          noticia.imagem.startsWith("/")
+                            ? noticia.imagem
+                            : `/${noticia.imagem}`
+                        }`
+                    : "/imagem-indisponivel.png"
+                }
+                alt={noticia.titulo}
+                onError={(event) => {
+                  console.error(
+                    "Não foi possível carregar a imagem:",
+                    event.currentTarget.src,
+                  );
+                }}
+              />
 
-            <div className="card-info-Ul-noticias">
-              <p className="categoria" style={{textAlign: "center"}}>{noticia.categoria}</p>
+              <div className="card-info-Ul-noticias">
+                <p className="categoria" style={{ textAlign: "center" }}>
+                  {noticia.categoria}
+                </p>
 
-              <div className="txt-noticia">{noticia.titulo}</div>
+                <div className="txt-noticia">{noticia.titulo}</div>
+              </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

@@ -1,4 +1,6 @@
 import pool from "../config/database.js";
+import { unlink } from "node:fs/promises";
+import path from "node:path";
 
 export const listarNoticias = async (req, res) => {
   try {
@@ -187,3 +189,55 @@ export const buscarNoticiaPorId = async (req, res) => {
     return res.status(500).json({ error: "Erro interno no servidor." });
   }
 };
+
+export async function excluirNoticia(req, res) {
+  try {
+    const { idNoticias } = req.params;
+
+    if (!/^\d+$/.test(idNoticias)) {
+      return res.status(400).json({
+        mensagem: "ID da notícia inválido.",
+      });
+    }
+
+    const [noticias] = await pool.execute(
+      "SELECT imagem FROM noticias WHERE idNoticias = ?",
+      [idNoticias],
+    );
+
+    if (noticias.length === 0) {
+      return res.status(404).json({
+        mensagem: "Notícia não encontrada.",
+      });
+    }
+
+    const imagem = noticias[0].imagem;
+
+    await pool.execute("DELETE FROM noticias WHERE idNoticias = ?", [
+      idNoticias,
+    ]);
+
+    if (imagem && imagem.startsWith("/uploads/")) {
+      const nomeArquivo = path.basename(imagem);
+      const caminhoImagem = path.resolve("uploads", nomeArquivo);
+
+      try {
+        await unlink(caminhoImagem);
+      } catch (erroArquivo) {
+        if (erroArquivo.code !== "ENOENT") {
+          console.error("Erro ao apagar a imagem:", erroArquivo);
+        }
+      }
+    }
+
+    return res.status(200).json({
+      mensagem: "Notícia excluída com sucesso!",
+    });
+  } catch (erro) {
+    console.error("Erro ao excluir notícia:", erro);
+
+    return res.status(500).json({
+      mensagem: "Erro interno ao excluir a notícia.",
+    });
+  }
+}

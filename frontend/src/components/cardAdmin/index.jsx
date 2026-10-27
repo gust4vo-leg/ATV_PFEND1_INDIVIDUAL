@@ -7,11 +7,8 @@ const NOTICIAS_POR_PAGINA = 7;
 
 export default function CardAdmin({ noticiasAdmin = [] }) {
   const [paginaAtual, setPaginaAtual] = useState(1);
-
   const totalPaginas = Math.ceil(noticiasAdmin.length / NOTICIAS_POR_PAGINA);
-
   const indiceInicial = (paginaAtual - 1) * NOTICIAS_POR_PAGINA;
-
   const noticiasPaginadas = noticiasAdmin.slice(
     indiceInicial,
     indiceInicial + NOTICIAS_POR_PAGINA,
@@ -25,6 +22,35 @@ export default function CardAdmin({ noticiasAdmin = [] }) {
     if (novaPagina >= 1 && novaPagina <= totalPaginas) {
       setPaginaAtual(novaPagina);
     }
+  }
+
+  function excluirNoticia(idNoticias) {
+    const confirmar = window.confirm(
+      "Tem certeza que deseja excluir esta notícia?",
+    );
+
+    if (!confirmar) {
+      return;
+    }
+
+    fetch(`http://localhost:3005/api/noticias/${idNoticias}`, {
+      method: "DELETE",
+    })
+      .then((resposta) => {
+        if (!resposta.ok) {
+          throw new Error("Não foi possível excluir a notícia.");
+        }
+
+        return resposta.json();
+      })
+      .then((dados) => {
+        alert(dados.mensagem);
+        window.location.reload();
+      })
+      .catch((erro) => {
+        console.error("Erro ao excluir notícia:", erro);
+        alert(erro.message);
+      });
   }
 
   return (
@@ -104,9 +130,7 @@ export default function CardAdmin({ noticiasAdmin = [] }) {
                         type="button"
                         className="btn-excluir-admin"
                         title="Excluir notícia"
-                        onClick={() =>
-                          alert("A função de excluir será implementada.")
-                        }
+                        onClick={() => excluirNoticia(noticia.idNoticias)}
                       >
                         <i className="bi bi-trash3"></i>
                       </button>

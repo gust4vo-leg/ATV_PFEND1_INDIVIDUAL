@@ -2,9 +2,13 @@
 
 import "./ultimas.css";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import CardUltimasNoticias from "@/components/ultimasNoticias";
 
 export default function UltimasNoticias() {
+  const searchParams = useSearchParams();
+  const categoriaUrl = searchParams.get("categoria");
+
   const [noticias, setNoticias] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
@@ -21,13 +25,23 @@ export default function UltimasNoticias() {
   ];
 
   useEffect(() => {
+    if (categoriaUrl && categorias.includes(categoriaUrl)) {
+      setCategoriaSelecionada(categoriaUrl);
+    } else {
+      setCategoriaSelecionada("Todas");
+    }
+  }, [categoriaUrl]);
+
+  useEffect(() => {
     setCarregando(true);
     setErro("");
 
     const url =
       categoriaSelecionada === "Todas"
         ? "http://localhost:3005/api/noticias"
-        : `http://localhost:3005/api/noticias?categoria=${encodeURIComponent(categoriaSelecionada)}`;
+        : `http://localhost:3005/api/noticias?categoria=${encodeURIComponent(
+            categoriaSelecionada,
+          )}`;
 
     fetch(url)
       .then((resposta) => {
@@ -75,12 +89,6 @@ export default function UltimasNoticias() {
             ))}
           </ul>
         </nav>
-
-        <button className="btn-filtro-data">
-          <i className="bi bi-funnel-fill"></i>
-          <span>Mais recentes primeiro</span>
-          <i className="bi bi-sort-down"></i>
-        </button>
       </div>
 
       <div className="container-cards-ultimas">
@@ -89,7 +97,9 @@ export default function UltimasNoticias() {
         ) : erro ? (
           <p>{erro}</p>
         ) : noticias.length === 0 ? (
-          <p style={{color: "#fff", margin: "10px"}}>Nenhuma notícia cadastrada.</p>
+          <p style={{ color: "#fff", margin: "10px" }}>
+            Nenhuma notícia cadastrada.
+          </p>
         ) : (
           <CardUltimasNoticias UltimasNoticias={noticias} />
         )}

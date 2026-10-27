@@ -60,6 +60,10 @@
     margin-left: 5px;
 }
 
+.hero-right a {
+    text-decoration: none;
+}
+
 .card-ul-noticia img {
     width: 8vw;
     border-radius: 12px;
@@ -73,6 +77,13 @@
     border-bottom: 1px solid var(--border-divisoria);
 }
 
+.card-ul-noticia:hover {
+    background: var(--border-divisoria);
+    padding: 10px;
+    border-radius: 6px;
+    transition: .3s ease;
+}
+
 .card-info-Ul-noticias {
     display: flex;
     flex-direction: column;
@@ -84,7 +95,7 @@
     background: var(--color-primary);
     padding: 5px 7px;
     border-radius: 9px;
-    width: 6.5vw;
+    width: 8.5vw;
     align-items: center;
 }
 

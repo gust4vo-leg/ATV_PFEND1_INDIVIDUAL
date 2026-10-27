@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import "./destaqueNoticias.css";
+import Link from "next/link";
 
 export default function Destaque() {
   const [destaques, setDestaques] = useState([]);
@@ -38,47 +39,49 @@ export default function Destaque() {
 
       <div className="row row-cols-1 row-cols-md-4 g-4">
         {destaques.slice(0, 4).map((noticia) => (
-          <div className="col" key={noticia.idNoticias}>
-            <div className="card h-100">
-              <img
-                src={
-                  noticia.imagem
-                    ? noticia.imagem.startsWith("http")
-                      ? noticia.imagem
-                      : `http://localhost:3005${
-                          noticia.imagem.startsWith("/")
-                            ? noticia.imagem
-                            : `/${noticia.imagem}`
-                        }`
-                    : "/imagem-indisponivel.png"
-                }
-                alt={noticia.titulo}
-                className="card-img-top"
-                onError={(event) => {
-                  console.error(
-                    "Não foi possível carregar a imagem:",
-                    event.currentTarget.src,
-                  );
-                }}
-              />
+          <Link href={`/ultimasNoticias/${noticia.idNoticias}`}>
+            <div className="col" key={noticia.idNoticias}>
+              <div className="card h-100">
+                <img
+                  src={
+                    noticia.imagem
+                      ? noticia.imagem.startsWith("http")
+                        ? noticia.imagem
+                        : `http://localhost:3005${
+                            noticia.imagem.startsWith("/")
+                              ? noticia.imagem
+                              : `/${noticia.imagem}`
+                          }`
+                      : "/imagem-indisponivel.png"
+                  }
+                  alt={noticia.titulo}
+                  className="card-img-top"
+                  onError={(event) => {
+                    console.error(
+                      "Não foi possível carregar a imagem:",
+                      event.currentTarget.src,
+                    );
+                  }}
+                />
 
-              <div className="card-body">
-                <div className="categoria">{noticia.categoria}</div>
+                <div className="card-body">
+                  <div className="categoria">{noticia.categoria}</div>
 
-                <h5 className="card-title">{noticia.titulo}</h5>
+                  <h5 className="card-title">{noticia.titulo}</h5>
 
-                <p className="card-text">{noticia.descricao}</p>
-              </div>
+                  <p className="card-text">{noticia.descricao}</p>
+                </div>
 
-              <div className="card-footer">
-                <small className="text-body-secondary">
-                  {new Date(noticia.data_publicacao).toLocaleDateString(
-                    "pt-BR",
-                  )}
-                </small>
+                <div className="card-footer">
+                  <small className="text-body-secondary">
+                    {new Date(noticia.data_publicacao).toLocaleDateString(
+                      "pt-BR",
+                    )}
+                  </small>
+                </div>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </>
