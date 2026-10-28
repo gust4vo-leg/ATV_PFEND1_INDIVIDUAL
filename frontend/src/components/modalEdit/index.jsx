@@ -30,6 +30,7 @@ export default function ModalEdit({ noticia, onFechar }) {
   const [dataPublicacao, setDataPublicacao] = useState("");
   const [imagem, setImagem] = useState(null);
   const [salvando, setSalvando] = useState(false);
+  const [mensagem, setMensagem] = useState("");
 
   useEffect(() => {
     if (!noticia) return;
@@ -39,18 +40,14 @@ export default function ModalEdit({ noticia, onFechar }) {
     setCategoria(noticia.categoria || "");
     setConteudo(noticia.conteudo || "");
 
-    if (noticia.data_publicacao) {
-      const data = new Date(noticia.data_publicacao);
-      const ano = data.getFullYear();
-      const mes = String(data.getMonth() + 1).padStart(2, "0");
-      const dia = String(data.getDate()).padStart(2, "0");
-
-      setDataPublicacao(`${ano}-${mes}-${dia}`);
-    } else {
-      setDataPublicacao("");
-    }
+    setDataPublicacao(
+      noticia.data_publicacao
+        ? String(noticia.data_publicacao).slice(0, 10)
+        : "",
+    );
 
     setImagem(null);
+    setMensagem("");
   }, [noticia]);
 
   async function salvarEdicao(event) {
@@ -58,20 +55,45 @@ export default function ModalEdit({ noticia, onFechar }) {
 
     if (!noticia?.idNoticias || salvando) return;
 
+    if (
+      !titulo.trim() ||
+      !descricao.trim() ||
+      !categoria.trim() ||
+      !conteudo.trim() ||
+      !dataPublicacao
+    ) {
+      setMensagem("Preencha todos os campos obrigatórios.");
+      return;
+    }
+
+    if (imagem) {
+      if (!["image/jpeg", "image/png", "image/webp"].includes(imagem.type)) {
+        setMensagem("Selecione uma imagem JPG, PNG ou WEBP.");
+        return;
+      }
+
+      if (imagem.size > 5 * 1024 * 1024) {
+        setMensagem("A imagem deve ter no máximo 5 MB.");
+        return;
+      }
+    }
+
+    const formulario = new FormData();
+
+    formulario.append("titulo", titulo.trim());
+    formulario.append("descricao", descricao.trim());
+    formulario.append("categoria", categoria.trim());
+    formulario.append("conteudo", conteudo.trim());
+    formulario.append("data_publicacao", dataPublicacao);
+
+    // Só envia a imagem quando uma nova for selecionada.
+    if (imagem) {
+      formulario.append("imagem", imagem);
+    }
+
     try {
       setSalvando(true);
-
-      const formulario = new FormData();
-
-      formulario.append("titulo", titulo);
-      formulario.append("descricao", descricao);
-      formulario.append("categoria", categoria);
-      formulario.append("conteudo", conteudo);
-      formulario.append("data_publicacao", dataPublicacao);
-
-      if (imagem) {
-        formulario.append("imagem", imagem);
-      }
+      setMensagem("");
 
       const resposta = await fetch(
         `http://localhost:3005/api/noticias/${noticia.idNoticias}`,
@@ -81,16 +103,24 @@ export default function ModalEdit({ noticia, onFechar }) {
         },
       );
 
+      const resultado = await resposta.json().catch(() => null);
+
       if (!resposta.ok) {
-        throw new Error("Não foi possível editar a notícia.");
+        throw new Error(
+          resultado?.mensagem ||
+            resultado?.message ||
+            resultado?.error ||
+            "Não foi possível editar a notícia.",
+        );
       }
 
-      alert("Notícia atualizada com sucesso!");
+      alert(resultado?.mensagem || "Notícia atualizada com sucesso!");
+
       onFechar();
       window.location.reload();
     } catch (erro) {
       console.error("Erro ao editar notícia:", erro);
-      alert(erro.message || "Ocorreu um erro ao editar a notícia.");
+      setMensagem(erro.message || "Erro ao conectar com o servidor.");
     } finally {
       setSalvando(false);
     }
@@ -99,165 +129,181 @@ export default function ModalEdit({ noticia, onFechar }) {
   if (!noticia) return null;
 
   return (
-    <div className="modal-overlay">
-      <div
-        className="modal-editar-noticia"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="titulo-modal-editar"
-      >
-        <div className="top-form">
-          <span id="titulo-modal-editar">Editar Notícia</span>
+    <main id="modal">
+      <div className="modal-overlay">
+        <div
+          className="modal-editar-noticia"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="titulo-modal-editar"
+        >
+          <div className="top-form">
+            <span id="titulo-modal-editar">Editar Notícia</span>
 
-          <button
-            type="button"
-            className="btn-fechar-modal"
-            onClick={onFechar}
-            aria-label="Fechar modal"
-          >
-            <i className="bi bi-x-lg"></i>
-          </button>
-        </div>
-
-        <form onSubmit={salvarEdicao}>
-          <div className="mb-3">
-            <label htmlFor="titulo" className="form-label">
-              Título <span className="text-danger">*</span>
-            </label>
-
-            <input
-              type="text"
-              className="form-control"
-              id="titulo"
-              value={titulo}
-              onChange={(event) => setTitulo(event.target.value)}
-              placeholder="Digite o título da notícia..."
-              required
-            />
+            <button
+              type="button"
+              className="btn-fechar-modal"
+              onClick={onFechar}
+              aria-label="Fechar modal"
+              disabled={salvando}
+            >
+              <i className="bi bi-x-lg"></i>
+            </button>
           </div>
 
-          <div className="mb-3">
-            <label htmlFor="descricao" className="form-label">
-              Descrição <span className="text-danger">*</span>
-            </label>
+          <form onSubmit={salvarEdicao}>
+            <div className="mb-3">
+              <label htmlFor="titulo" className="form-label">
+                Título <span className="text-danger">*</span>
+              </label>
 
-            <textarea
-              className="form-control"
-              id="descricao"
-              name="descricao"
-              value={descricao}
-              onChange={(event) => setDescricao(event.target.value)}
-              placeholder="Escreva uma breve descrição..."
-              required
-            />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="categoria" className="form-label">
-              Categoria <span className="text-danger">*</span>
-            </label>
-
-            <input
-              type="text"
-              className="form-control"
-              id="categoria"
-              name="categoria"
-              list="categorias-esportivas"
-              value={categoria}
-              onChange={(event) => setCategoria(event.target.value)}
-              autoComplete="off"
-              placeholder="Digite ou selecione um esporte..."
-              required
-            />
-
-            <datalist id="categorias-esportivas">
-              {categorias.map((item) => (
-                <option key={item} value={item} />
-              ))}
-            </datalist>
-
-            <small className="text-secondary">
-              Escolha uma sugestão ou digite outro esporte.
-            </small>
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="conteudo" className="form-label">
-              Conteúdo <span className="text-danger">*</span>
-            </label>
-
-            <textarea
-              className="form-control"
-              id="conteudo"
-              name="conteudo"
-              value={conteudo}
-              onChange={(event) => setConteudo(event.target.value)}
-              placeholder="Digite ou cole o texto completo da reportagem..."
-              required
-            />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="data_publicacao" className="form-label">
-              Data de Publicação <span className="text-danger">*</span>
-            </label>
-
-            <div className="input-icon">
               <input
-                type="date"
-                id="data_publicacao"
-                name="data_publicacao"
-                value={dataPublicacao}
-                onChange={(event) => setDataPublicacao(event.target.value)}
+                type="text"
+                className="form-control"
+                id="titulo"
+                value={titulo}
+                onChange={(event) => setTitulo(event.target.value)}
+                maxLength={500}
+                placeholder="Digite o título da notícia..."
                 required
               />
             </div>
-          </div>
 
-          <div className="campo-modal">
-            <label htmlFor="imagem" className="form-label">
-              Imagem da Notícia
-            </label>
+            <div className="mb-3">
+              <label htmlFor="descricao" className="form-label">
+                Descrição <span className="text-danger">*</span>
+              </label>
 
-            <div className="upload-imagem">
-              <i className="bi bi-image"></i>
-              <span>
-                {imagem ? imagem.name : "Selecionar nova imagem (opcional)"}
-              </span>
-
-              <input
-                type="file"
+              <textarea
                 className="form-control"
-                id="imagem"
-                name="imagem"
-                accept="image/jpeg,image/png,image/webp"
-                onChange={(event) => setImagem(event.target.files?.[0] || null)}
+                id="descricao"
+                name="descricao"
+                value={descricao}
+                onChange={(event) => setDescricao(event.target.value)}
+                maxLength={500}
+                rows={3}
+                placeholder="Escreva uma breve descrição..."
+                required
               />
             </div>
 
-            <small className="text-secondary">
-              Se não selecionar outra imagem, a imagem atual será mantida, desde
-              que sua API implemente esse comportamento.
-            </small>
-          </div>
+            <div className="mb-3">
+              <label htmlFor="categoria" className="form-label">
+                Categoria <span className="text-danger">*</span>
+              </label>
 
-          <div className="acoes-modal">
-            <button
-              type="button"
-              className="btn-cancelar"
-              onClick={onFechar}
-              disabled={salvando}
-            >
-              Cancelar
-            </button>
+              <input
+                type="text"
+                className="form-control"
+                id="categoria"
+                name="categoria"
+                list="categorias-esportivas-editar"
+                value={categoria}
+                onChange={(event) => setCategoria(event.target.value)}
+                maxLength={255}
+                autoComplete="off"
+                placeholder="Digite ou selecione um esporte..."
+                required
+              />
 
-            <button type="submit" className="btn-salvar" disabled={salvando}>
-              <i className="bi bi-check-lg"></i>
-              {salvando ? "Salvando..." : "Editar Notícia"}
-            </button>
-          </div>
-        </form>
+              <datalist id="categorias-esportivas-editar">
+                {categorias.map((item) => (
+                  <option key={item} value={item} />
+                ))}
+              </datalist>
+
+              <small className="text-secondary">
+                Escolha uma sugestão ou digite outro esporte.
+              </small>
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="conteudo" className="form-label">
+                Conteúdo <span className="text-danger">*</span>
+              </label>
+
+              <textarea
+                className="form-control"
+                id="conteudo"
+                name="conteudo"
+                value={conteudo}
+                onChange={(event) => setConteudo(event.target.value)}
+                rows={7}
+                placeholder="Digite ou cole o texto completo da reportagem..."
+                required
+              />
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="data_publicacao" className="form-label">
+                Data de Publicação <span className="text-danger">*</span>
+              </label>
+
+              <div className="input-icon">
+                <input
+                  type="date"
+                  id="data_publicacao"
+                  name="data_publicacao"
+                  value={dataPublicacao}
+                  onChange={(event) => setDataPublicacao(event.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="campo-modal">
+              <label htmlFor="imagem" className="form-label">
+                Imagem da Notícia
+              </label>
+
+              <div className="upload-imagem">
+                <i className="bi bi-image"></i>
+
+                <span>
+                  {imagem ? imagem.name : "Selecionar nova imagem (opcional)"}
+                </span>
+
+                <input
+                  type="file"
+                  className="form-control"
+                  id="imagem"
+                  name="imagem"
+                  accept="image/jpeg,image/png,image/webp"
+                  onChange={(event) =>
+                    setImagem(event.target.files?.[0] || null)
+                  }
+                />
+              </div>
+
+              <small className="text-secondary">
+                Se não selecionar outra imagem, a imagem atual será mantida.
+              </small>
+            </div>
+
+            {mensagem && (
+              <div className="alert alert-danger mt-3" role="alert">
+                {mensagem}
+              </div>
+            )}
+
+            <div className="acoes-modal">
+              <button
+                type="button"
+                className="btn-cancelar"
+                onClick={onFechar}
+                disabled={salvando}
+              >
+                Cancelar
+              </button>
+
+              <button type="submit" className="btn-salvar" disabled={salvando}>
+                <i className="bi bi-check-lg"></i>{" "}
+                {salvando ? "Salvando..." : "Editar Notícia"}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
+    </main>
   );
 }

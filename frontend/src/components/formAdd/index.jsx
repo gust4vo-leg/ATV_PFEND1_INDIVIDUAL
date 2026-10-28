@@ -179,7 +179,6 @@ export default function FormAdd() {
             name="descricao"
             value={formulario.descricao}
             onChange={handleChange}
-            maxLength={500}
             rows={3}
             placeholder="Escreva uma breve descrição..."
             required

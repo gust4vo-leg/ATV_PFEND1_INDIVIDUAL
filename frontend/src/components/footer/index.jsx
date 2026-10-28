@@ -181,32 +181,6 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="footer-right">
-        <div className="top-footer-right">
-          <h4>RECEBA NOVIDADES</h4>
-        </div>
-
-        <span>
-          Cadastre-se para receber as principais notícias esportivas no seu
-          e-mail.
-        </span>
-
-        <div className="inscrever">
-          <form>
-            <input
-              type="email"
-              placeholder="Digite seu e-mail"
-              name="novidades"
-            />
-
-            <button type="submit">
-              <i className="bi bi-send-fill"></i>
-              <p>Inscrever</p>
-            </button>
-          </form>
-        </div>
-      </div>
-
       <div className="footer-bottom">
         <span>
           © 2026 <strong>CronoSport</strong>. Todos os direitos reservados

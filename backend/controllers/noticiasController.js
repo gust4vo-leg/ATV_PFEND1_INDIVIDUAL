@@ -59,6 +59,9 @@ export const listarDestaques = async (req, res) => {
 };
 
 export async function criarNoticia(req, res) {
+  console.log("ENTROU NO CADASTRO");
+  console.log("BODY:", req.body);
+  console.log("ARQUIVO:", req.file);
   try {
     const { titulo, categoria, descricao, conteudo, data_publicacao } =
       req.body;
@@ -238,6 +241,140 @@ export async function excluirNoticia(req, res) {
 
     return res.status(500).json({
       mensagem: "Erro interno ao excluir a notícia.",
+    });
+  }
+}
+
+export async function editarNoticia(req, res) {
+  let imagemNova = null;
+
+  try {
+    const { idNoticias } = req.params;
+
+    if (!/^\d+$/.test(idNoticias)) {
+      return res.status(400).json({
+        mensagem: "ID da notícia inválido.",
+      });
+    }
+
+    const { titulo, categoria, descricao, conteudo, data_publicacao } =
+      req.body || {};
+
+    if (
+      typeof titulo !== "string" ||
+      !titulo.trim() ||
+      typeof categoria !== "string" ||
+      !categoria.trim() ||
+      typeof descricao !== "string" ||
+      !descricao.trim() ||
+      typeof conteudo !== "string" ||
+      !conteudo.trim() ||
+      typeof data_publicacao !== "string" ||
+      !/^\d{4}-\d{2}-\d{2}$/.test(data_publicacao)
+    ) {
+      return res.status(400).json({
+        mensagem: "Preencha todos os campos obrigatórios corretamente.",
+      });
+    }
+
+    if (
+      titulo.trim().length > 500 ||
+      categoria.trim().length > 255 ||
+      descricao.trim().length > 500
+    ) {
+      return res.status(400).json({
+        mensagem: "Um ou mais campos ultrapassaram o limite permitido.",
+      });
+    }
+
+    const [ano, mes, dia] = data_publicacao.split("-").map(Number);
+    const dataVerificada = new Date(Date.UTC(ano, mes - 1, dia));
+
+    if (
+      dataVerificada.getUTCFullYear() !== ano ||
+      dataVerificada.getUTCMonth() !== mes - 1 ||
+      dataVerificada.getUTCDate() !== dia
+    ) {
+      return res.status(400).json({
+        mensagem: "A data de publicação informada não existe.",
+      });
+    }
+
+    const [noticias] = await pool.execute(
+      "SELECT imagem FROM noticias WHERE idNoticias = ?",
+      [idNoticias],
+    );
+
+    if (noticias.length === 0) {
+      return res.status(404).json({
+        mensagem: "Notícia não encontrada.",
+      });
+    }
+
+    const imagemAntiga = noticias[0].imagem;
+
+    imagemNova = req.file ? `/uploads/${req.file.filename}` : imagemAntiga;
+
+    const data = `${data_publicacao} 12:00:00`;
+
+    await pool.execute(
+      `UPDATE noticias
+       SET titulo = ?,
+           categoria = ?,
+           descricao = ?,
+           conteudo = ?,
+           imagem = ?,
+           data_publicacao = ?
+       WHERE idNoticias = ?`,
+      [
+        titulo.trim(),
+        categoria.trim(),
+        descricao.trim(),
+        conteudo.trim(),
+        imagemNova,
+        data,
+        idNoticias,
+      ],
+    );
+
+    if (req.file && imagemAntiga && imagemAntiga.startsWith("/uploads/")) {
+      const nomeAntigo = path.basename(imagemAntiga);
+      const caminhoAntigo = path.resolve("uploads", nomeAntigo);
+
+      try {
+        await unlink(caminhoAntigo);
+      } catch (erroArquivo) {
+        if (erroArquivo.code !== "ENOENT") {
+          console.error("Erro ao apagar imagem antiga:", erroArquivo);
+        }
+      }
+    }
+
+    return res.status(200).json({
+      mensagem: "Notícia atualizada com sucesso!",
+      noticia: {
+        idNoticias: Number(idNoticias),
+        titulo: titulo.trim(),
+        categoria: categoria.trim(),
+        descricao: descricao.trim(),
+        conteudo: conteudo.trim(),
+        imagem: imagemNova,
+        data_publicacao: data,
+      },
+    });
+  } catch (erro) {
+    console.error("Erro ao editar notícia:", erro);
+
+    if (req.file && imagemNova === null) {
+      try {
+        await unlink(req.file.path);
+      } catch (erroArquivo) {
+        console.error("Erro ao remover arquivo temporário:", erroArquivo);
+      }
+    }
+
+    return res.status(500).json({
+      mensagem: "Erro interno ao editar a notícia.",
     });
   }
 }

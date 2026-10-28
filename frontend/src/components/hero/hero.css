@@ -9,34 +9,34 @@
 }
 
 .hero-left .carousel-inner {
-  width: 100%;
+    width: 100%;
 }
 
 .hero-left .carousel-item {
-  height:600px;
-  overflow: hidden;
+    height: 600px;
+    overflow: hidden;
 }
 
 .hero-left .carousel-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
 
 .carousel-caption {
-  text-align: left !important;
-  left: 5% !important;
-  right: auto !important;
-  bottom: 7% !important; 
-  width: 65%;
-  
-  background: rgba(0, 0, 0, 0.55); 
-  padding: 20px;                   
-  border-radius: 8px;  
-  
-  line-height: 1.2;
+    text-align: left !important;
+    left: 5% !important;
+    right: auto !important;
+    bottom: 7% !important;
+    width: 65%;
+
+    background: rgba(0, 0, 0, 0.55);
+    padding: 20px;
+    border-radius: 8px;
+
+    line-height: 1.2;
 }
 
 .carousel-caption .categoria {
@@ -78,9 +78,7 @@
 }
 
 .card-ul-noticia:hover {
-    background: var(--border-divisoria);
-    padding: 10px;
-    border-radius: 6px;
+    transform: translateX(25px);
     transition: .3s ease;
 }
 

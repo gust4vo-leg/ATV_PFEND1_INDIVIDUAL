@@ -6,6 +6,7 @@ import {
   criarNoticia,
   buscarNoticiaPorId,
   excluirNoticia,
+  editarNoticia,
 } from "../controllers/noticiasController.js";
 
 import uploadImagem from "../middlewares/uploadImagem.js";
@@ -14,7 +15,10 @@ const router = express.Router();
 
 router.get("/", listarNoticias);
 router.get("/destaques", listarDestaques);
+
 router.post("/", uploadImagem.single("imagem"), criarNoticia);
+router.put("/:idNoticias", uploadImagem.single("imagem"), editarNoticia);
+
 router.delete("/:idNoticias", excluirNoticia);
 router.get("/:idNoticias", buscarNoticiaPorId);
 

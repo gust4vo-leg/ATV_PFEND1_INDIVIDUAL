@@ -156,10 +156,6 @@ export default function Admin() {
                 </div>
               </div>
             ))}
-
-            <div className="bottom-ul-noticia-admin">
-              <Link href="/ultimasNoticas">Ver todas</Link>
-            </div>
           </div>
         </div>
       </div>
