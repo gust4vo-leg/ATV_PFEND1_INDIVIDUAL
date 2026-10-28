@@ -103,7 +103,7 @@ export default function Admin() {
         <div className="cards-estatisticas">
           <div className="estatistica">
             <div className="top-estatistica">
-              <i class="bi bi-exclamation-circle"></i>
+              <i className="bi bi-exclamation-circle"></i>
               <p>Estatísticas</p>
             </div>
 

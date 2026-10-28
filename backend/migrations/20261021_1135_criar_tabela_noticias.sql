@@ -16,23 +16,9 @@ SELECT * FROM noticias;
 
 TRUNCATE noticias;
 
-CREATE TABLE administradores (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(150) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    senha VARCHAR(255) NOT NULL
-);
-
 INSERT INTO noticias
 (titulo, categoria, descricao, conteudo, imagem)
 VALUES
-(
-'Clássico nacional promete fortes emoções na disputa pelo título',
-'Futebol',
-'Confronto entre duas equipes tradicionais pode influenciar diretamente a classificação do campeonato. Os times chegam com objetivos importantes e sabem que qualquer erro pode fazer diferença na reta decisiva da temporada.',
-'O futebol brasileiro se prepara para um confronto que promete movimentar a rodada e atrair a atenção dos torcedores. As duas equipes vivem momentos importantes na temporada e sabem que conquistar os três pontos pode representar uma vantagem significativa na disputa pelas primeiras posições. Durante a preparação, os treinadores trabalharam diferentes alternativas táticas, buscando aproveitar os pontos fortes de seus elencos e reduzir os espaços para os adversários. A expectativa é de uma partida marcada pela intensidade no meio-campo, pela velocidade nas transições ofensivas e pela importância das jogadas de bola parada. Outro fator que pode influenciar o resultado é o controle emocional, principalmente se o placar permanecer equilibrado durante boa parte do confronto. A equipe que conseguir manter a organização defensiva e aproveitar melhor as oportunidades de gol poderá sair com uma vitória importante. Embora o favoritismo possa ser discutido antes da partida, o desempenho dentro de campo será determinante para definir o resultado. Para os torcedores, o confronto representa mais um capítulo de uma rivalidade que continua despertando grande interesse no cenário esportivo nacional.',
-'/imagens/sp.jpg'
-),
 (
 'Jovens talentos ganham espaço e renovam o futebol brasileiro',
 'Futebol',
